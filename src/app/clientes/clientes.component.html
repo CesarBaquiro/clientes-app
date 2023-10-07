@@ -16,6 +16,7 @@
           <th>Email</th>
           <th>Fecha</th>
           <th>Editar</th>
+          <th>Borrar</th>
         </tr>
       </thead>
       <tbody>
@@ -38,6 +39,9 @@
           <td>
             <button type="button" name="button" [routerLink]="['/clientes/form', cliente.id]"
               class="btn btn-primary">Editar</button>
+          </td>
+          <td>
+            <button type="button" name="eliminar" class="btn btn-danger" (click)="delete(cliente)">Borrar</button>
           </td>
         </tr>
       </tbody>
