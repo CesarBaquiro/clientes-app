@@ -52,7 +52,7 @@ export class ClientesComponent implements OnInit {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire(
             'Cancelado',
-            'Cancelado con exito',
+            'Eliminacion cancelada',
             'error'
           );
         }
