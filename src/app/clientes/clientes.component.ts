@@ -3,6 +3,7 @@ import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
@@ -10,13 +11,26 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ClientesComponent implements OnInit {
   clientes: Cliente[];
+  paginador: any;
 
-  constructor(private clienteService: ClienteService) {}
+  constructor(
+    private clienteService: ClienteService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.clienteService
-      .getClientes()
-      .subscribe((clientes) => (this.clientes = clientes));
+    this.activatedRoute.paramMap.subscribe((params) => {
+      //Tomamos la paginacion de los parametros
+      let page: number = +params.get('page');
+      // Si la pagina no viene por parametro sera igual a 0, que es el valor de la primera pagina
+      if (!page) {
+        page = 0;
+      }
+      this.clienteService.getClientes(page).subscribe((clientes) => {
+        this.clientes = clientes.content;
+        this.paginador = clientes;
+      });
+    });
   }
 
   public delete(cliente: Cliente): void {

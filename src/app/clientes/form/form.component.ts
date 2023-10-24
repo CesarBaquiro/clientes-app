@@ -13,6 +13,8 @@ export class FormComponent implements OnInit {
   public cliente: Cliente = new Cliente();
   public titulo: string = 'Crear cliente';
 
+  public errores: string[];
+
   constructor(
     private clienteService: ClienteService,
     private router: Router,
@@ -35,26 +37,38 @@ export class FormComponent implements OnInit {
   }
 
   public create(): void {
-    this.clienteService.create(this.cliente).subscribe((response) => {
-      this.router.navigate(['/clientes']);
-      swal.fire(
-        'Nuevo cliente',
-        `Cliente ${this.cliente.nombre} creado con exito!`,
-        'success'
-      );
-    });
+    this.clienteService.create(this.cliente).subscribe(
+      (response) => {
+        this.router.navigate(['/clientes']);
+        swal.fire(
+          'Nuevo cliente',
+          `Cliente ${this.cliente.nombre} creado con exito!`,
+          'success'
+        );
+      },
+      (err) => {
+        this.errores = err.error.errors as string[];
+        console.error('Codigo error desde el backend: ' + err.status);
+        console.error(err.error.errors);
+      }
+    );
   }
 
   public update(): void {
-    this.clienteService
-      .update(this.cliente.id, this.cliente)
-      .subscribe((cliente) => {
+    this.clienteService.update(this.cliente.id, this.cliente).subscribe(
+      (cliente) => {
         this.router.navigate(['/clientes']);
         swal.fire(
           'Cliente Actualizado',
           `Cliente ${this.cliente.nombre} actualizado con exito!`,
           'success'
         );
-      });
+      },
+      (err) => {
+        this.errores = err.error.errors as string[];
+        console.error('Codigo del error desdee el backend' + err.status);
+        console.error(err.error.errors);
+      }
+    );
   }
 }

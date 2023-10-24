@@ -1,0 +1,37 @@
+<ul *ngIf=" paginas?.length>0" class="pagination">
+
+    <!-- Retroceder una pagina -->
+    <li *ngIf="paginador.number > 0" class="page-item">
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.number-1]">&laquo;</a>
+    </li>
+
+    <!-- Ir a la primera pagina -->
+    <!-- paginador.first es una propiedad del formato JSON enviado por el backend -->
+    <li [ngClass]="paginador.first? 'disabled':'page-item'" class="page-item">
+        <a class="page-link" [routerLink]="['/clientes/page', 0]">Primera</a>
+    </li>
+
+    <!-- Con active queda el boton azul, con disabled queda gris -->
+    <li *ngFor="let pagina of paginas" class="page-item" [ngClass]="pagina-1 == paginador.number? 'active':''">
+        <!-- Restamos 1 al paginador porque en el front le sumamos 1 y en el backend comienza desde 0 no desde 1 -->
+        <span *ngIf="pagina-1 == paginador.number" class="page-link">{{pagina}}</span>
+        <a *ngIf="pagina-1 != paginador.number" [routerLink]="['/clientes/page', pagina-1]" class="page-link">
+            {{pagina}}</a>
+    </li>
+
+    <!-- Ir a la ultima pagina -->
+    <!-- paginador.last es una propiedad del formato JSON enviado por el backend -->
+    <li [ngClass]="paginador.last? 'disabled':'page-item'" class="page-item">
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.totalPages-1]">Ultima</a>
+    </li>
+
+    <!-- Avanzar una pagina -->
+    <li *ngIf="paginador.number < paginador.totalPages-1" class="page-item">
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.number+1]">&raquo;</a>
+    </li>
+
+
+
+
+
+</ul>

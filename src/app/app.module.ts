@@ -7,14 +7,17 @@ import { HeaderComponent } from './header/header/header.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { DirectivaComponent } from './directiva/directiva.component';
 import { ClientesComponent } from './clientes/clientes.component';
-import { RouterModule, Routes } from '@angular/router';
 import { FormComponent } from './clientes/form/form.component';
+import { PaginatorComponent } from './paginator/paginator.component';
+
+import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: ' ', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
   { path: 'clientes', component: ClientesComponent },
+  { path: 'clientes/page/:page', component: ClientesComponent },
   { path: 'clientes/form', component: FormComponent },
   { path: 'clientes/form/:id', component: FormComponent },
 ];
@@ -27,6 +30,7 @@ const routes: Routes = [
     DirectivaComponent,
     ClientesComponent,
     FormComponent,
+    PaginatorComponent,
   ],
   imports: [
     BrowserModule,

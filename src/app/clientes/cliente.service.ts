@@ -17,8 +17,8 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.urlEndPoint);
+  getClientes(page: number): Observable<any> {
+    return this.http.get<any>(this.urlEndPoint + '/page/' + page);
   }
 
   create(cliente: Cliente): Observable<Cliente> {
@@ -26,6 +26,10 @@ export class ClienteService {
       .post<Cliente>(this.urlEndPoint, cliente, { headers: this.httpHeaders })
       .pipe(
         catchError((e) => {
+          if ((e.status = 400)) {
+            return throwError(e);
+          }
+
           console.error(e.error.mensaje);
           Swal.fire(e.error.mensaje, e.error.mensaje, 'error');
           return throwError(e);
@@ -49,6 +53,10 @@ export class ClienteService {
     const url = `${this.urlEndPoint}/${id}`;
     return this.http.put<Cliente>(url, clienteData).pipe(
       catchError((e) => {
+        if ((e.status = 400)) {
+          return throwError(e);
+        }
+
         console.error(e.error.mensaje);
         Swal.fire(e.error.mensaje, e.error.mensaje, 'error');
         return throwError(e);
@@ -69,9 +77,4 @@ export class ClienteService {
         })
       );
   }
-
-  // deleteCliente(id: number, clienteData: Cliente): Observable<Cliente> {
-  //   const url = `${this.urlEndPoint}/${id}`;
-  //   return this.http.put<Cliente>(url, clienteData);
-  // }
 }
